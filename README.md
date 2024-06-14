@@ -9,7 +9,7 @@ To build:
 2. Locate the line that sets MISSION_GLOBAL_APPLIST (~line 89) your app:
 
    ```
-   list(APPEND MISSION_GLOBAL_APPLIST ros_app sbn sbn_udp sbn_f_remap cf robot_sim sdytonrr_app)
+   list(APPEND MISSION_GLOBAL_APPLIST ros_app sbn sbn_udp sbn_f_remap cf robot_sim astrobee_app)
    ```
    
 3. Go to cFS/sample_defs. Add the app in **cpuX_cfe_es_startup.scr** with X=1 or 2 :
