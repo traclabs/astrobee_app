@@ -42,7 +42,7 @@
 */
 AstrobeeAppData_t AstrobeeAppData;
 struct robot_state_st{
-  AstrobeeAppJointState_t state; /**< Twist the robot is currently using **/
+  AstrobeeAppPose_t state; /**< Current robot pose **/
   bool is_robot_moving;
 } lastRobotState;
 bool updated_command;
@@ -149,7 +149,7 @@ int32 AstrobeeAppInit(void)
     updated_command = false;
 
     // Initialize telemetry data back to ground
-    fillJoints(&AstrobeeAppData.HkTlm.Payload.state, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+    fillTelemetry(&AstrobeeAppData.HkTlm.Payload.state, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
       
     AstrobeeAppData.HkTlm.Payload.is_robot_moving = false;
 
@@ -190,7 +190,7 @@ int32 AstrobeeAppInit(void)
     ** Initialize housekeeping packet (clear user data area).
     */
     CFE_MSG_Init(&AstrobeeAppData.HkTlm.TlmHeader.Msg, CFE_SB_ValueToMsgId(ASTROBEE_APP_HK_TLM_MID), sizeof(AstrobeeAppData.HkTlm));
-    CFE_MSG_Init(&AstrobeeAppData.FlightGoal.TlmHeader.Msg, CFE_SB_ValueToMsgId(ASTROBEE_APP_ROBOT_CONTROL_MID), sizeof(AstrobeeAppData.FlightGoal));
+    CFE_MSG_Init(&AstrobeeAppData.RobotCommand.TlmHeader.Msg, CFE_SB_ValueToMsgId(ASTROBEE_APP_ROBOT_CONTROL_MID), sizeof(AstrobeeAppData.RobotCommand));
 
     /*
     ** Create Software Bus message pipe.

@@ -67,8 +67,8 @@ typedef struct
 
     //Housekeeping telemetry packet...
     AstrobeeAppHkTlm_t HkTlm;
-    // Goal joint state sent to robot on flight side
-    AstrobeeAppRobotCommand_t FlightGoal;
+    // Command sent to robot on flight side
+    AstrobeeAppRobotCommand_t RobotCommand;
     
     // Run Status variable used in the main processing loop
     uint32 RunStatus;

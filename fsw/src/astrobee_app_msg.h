@@ -21,7 +21,7 @@
 ** File: astrobee_app_msg.h
 **
 ** Purpose:
-**  Define Canadarm App Messages and info
+**  Define Astrobee App Messages and info
 **
 ** Notes:
 **
@@ -31,7 +31,7 @@
 #define _astrobee_app_msg_h_
 
 /**
- * CanadarmApp command codes
+ * AstrobeeApp command codes
  */
 #define ASTROBEE_APP_NOOP_CC        0
 #define ASTROBEE_APP_MOVE_CC   1
@@ -44,25 +44,40 @@
 typedef struct 
 {
    CFE_MSG_CommandHeader_t CmdHeader;
-} CanadarmAppNoArgsCmd_t;
+} AstrobeeAppNoArgsCmd_t;
 
 
 typedef struct
 {
-  float joint_0;
-  float joint_1;
-  float joint_2;
-  float joint_3;
-  float joint_4;
-  float joint_5;
-  float joint_6;              
-} CanadarmAppJointState_t;
+  float x;
+  float y;
+  float z;
+  float qx;
+  float qy;
+  float qz;
+  float qw;
+  char frame[20];
+} AstrobeeAppPose_t;
 
 typedef struct
 {
    CFE_MSG_CommandHeader_t CmdHeader;
    uint8 pose_id;
-} CanadarmAppCmd_t;
+   char cmd_name[20];
+   char cmd_id[20];
+   char cmd_src[20];
+   char cmd_origin[20];
+   char subsys_name[20];
+   // Args
+   char frame[20];
+   float x;
+   float y;
+   float z;
+   float qx;
+   float qy;
+   float qz;
+      
+} AstrobeeAppCmd_t;
 
 /*
 ** The following commands all share the "NoArgs" format
@@ -71,7 +86,7 @@ typedef struct
 ** allows them to change independently in the future without changing the prototype
 ** of the handler function
 */
-typedef CanadarmAppNoArgsCmd_t CanadarmAppNoopCmd_t;
+typedef AstrobeeAppNoArgsCmd_t AstrobeeAppNoopCmd_t;
 
 /*************************************************************************/
 
@@ -79,31 +94,31 @@ typedef struct
 {
     uint8 CommandErrorCounter;
     uint8 CommandCounter;
-    CanadarmAppJointState_t state;
+    AstrobeeAppPose_t state;
     bool is_robot_moving;
-} CanadarmAppHkTlmPayload_t;
+} AstrobeeAppHkTlmPayload_t;
 
 typedef struct
 {
     CFE_MSG_TelemetryHeader_t  TlmHeader; /**< \brief Telemetry header */
-    CanadarmAppHkTlmPayload_t Payload;   /**< \brief Telemetry payload */
-} CanadarmAppHkTlm_t;
+    AstrobeeAppHkTlmPayload_t Payload;   /**< \brief Telemetry payload */
+} AstrobeeAppHkTlm_t;
 
 
 // These 2 messages are for communication with the robot on FSW side
 typedef struct
 {
     CFE_MSG_TelemetryHeader_t  TlmHeader; /**< \brief Telemetry header */
-    CanadarmAppJointState_t goal; /**< Twist currently being applied **/
+    AstrobeeAppCmd_t command; /**< Command being sent (undock or move) **/
 
-} CanadarmAppRobotCommand_t;
+} AstrobeeAppRobotCommand_t;
 
 typedef struct
 {
     CFE_MSG_CommandHeader_t  CmdHeader; /**< \brief Command header */
-    CanadarmAppJointState_t state; /**< Twist the robot is currently using **/
+    AstrobeeAppPose_t state; /**< Current pose of the robot **/
     bool is_robot_moving;
-} CanadarmAppRobotState_t;
+} AstrobeeAppRobotState_t;
 
 
 #endif /* _astrobee_app_msg_h_ */
